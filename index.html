@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+        integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Registration Form</h2>
+        </div>
+        <form class="form" id="form">
+            <div class="form-control">
+                <label for="user">User Name</label>
+                <input type="text" id="username" placeholder="Enter Your Full Name." autocomplete="off">
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="usernamee"></span>
+                <small>Error Msg</small>
+            </div>
+            <div class="form-control">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter Email Address." autocomplete="off">
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="emails"></span>
+                <small>Error Msg</small>
+            </div>
+            <div class="form-control">
+                <label for="mobile">Mobile Number</label>
+                <input type="number" id="mobilenumber" placeholder="Enter Mobile Number." autocomplete="off">
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="mbnum"></span>
+                <small>Error Msg</small>
+            </div>
+            <div class="form-control">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter Password." autocomplete="off">
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="pswd"></span>
+                <small>Error Msg</small>
+            </div>
+            <div class="form-control">
+                <label for="confirm password">Confirm Password</label>
+                <input type="password" id="cpassword" placeholder="Enter Again." autocomplete="off">
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="cpswd"></span>
+                <small>Error Msg</small>
+            </div>
+
+            <input type="submit" class="btn" value="Submit" name="">
+        </form>
+    </div>
+
+
+
+
+    <script type="text/javascript">
+
+        const form = document.getElementById('form');
+        const uname = document.getElementById('username');
+        const eml = document.getElementById('email');
+        const mbl = document.getElementById('mobilenumber');
+        const pas = document.getElementById('password');
+        const cpas = document.getElementById('cpassword');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            validate();
+        })
+
+        // successMsg for another page redirect------------->>>>>>>>>>>>>>>>>>>
+        const sendData = (uname,sRate,count) => {
+if (sRate === count) {
+    alert("Registration Successfully");
+    swal("Good job! "+uname, "Your registration is successfully done!", "success");
+    location.href = `demo.html?username=${uname}`
+
+}
+        }
+
+
+        const successMsg = (uname) => {
+            let fomCon = document.getElementsByClassName('form-control');
+            var count = fomCon.length-1;
+            for (var i = 0; i < fomCon.length; i++) {
+                if (fomCon[i].className === "form-control success") {
+                    var sRate = 0 + i;
+                    console.log(sRate);
+                    sendData(uname,sRate,count);
+                }else {
+                    return false;
+                }
+            }
+        }
+        // more email validate------------------->>>>>>>>>>>>>>>>>>>>>>>>
+        const isEmail = (eml) => {
+            const atsymbol = eml.indexOf("@");
+            if (atsymbol < 1) return false;
+
+            var dot = eml.lastIndexOf('.');
+            if (dot <= atsymbol + 3) return false;
+            if (dot === eml.length - 1) return false;
+            return true;
+        }
+
+
+        const validate = () => {
+            const uname = username.value.trim();
+            const eml = email.value.trim();
+            const mbl = mobilenumber.value.trim();
+            const pas = password.value.trim();
+            const cpas = cpassword.value.trim();
+
+            // username validation------------------------------->>>>>>
+            if (uname === "") {
+                setErrorMsg(username, 'cannot be blank');
+            }
+            else if (uname.length <= 2) {
+                setErrorMsg(username, 'length is more than 2');
+            }
+            else {
+                setSuccessMsg(username);
+            }
+            // email validation--------------------------------->>>>>>>>>>>
+
+            if (eml === "") {
+                setErrorMsg(email, 'cannot be blank');
+            }
+            else if (!isEmail(eml)) {
+                setErrorMsg(email, 'Email not valid');
+            }
+            else {
+                setSuccessMsg(email);
+            }
+
+            // phone validationn--------------------------->>>>>>>>>>>>>>>>>>
+
+            if (mbl === "") {
+                setErrorMsg(mobilenumber, 'cannot be blank');
+            }
+            else if (mbl.length <= 11) {
+                setErrorMsg(mobilenumber, 'Mobil enumber not valid');
+            }
+            else {
+                setSuccessMsg(mobilenumber);
+            }
+
+            // password validation-------------->>>>>>>>>>>>>>>>>>>>>>>>>
+
+            if (pas === "") {
+                setErrorMsg(password, 'cannot be blank');
+            }
+            else if (pas.length <= 5) {
+                setErrorMsg(password, 'Password min 6 character');
+            }
+            else {
+                setSuccessMsg(password);
+            }
+            // Cpassword validation-------------->>>>>>>>>>>>>>>>>>>>>>>>>
+
+            if (cpas === "") {
+                setErrorMsg(cpassword, 'cannot be blank');
+            }
+            else if (pas !== cpas) {
+                setErrorMsg(cpassword, 'Password not matching');
+            }
+            else {
+                setSuccessMsg(cpassword);
+            }
+
+
+
+
+            successMsg(uname);
+
+
+
+        }
+        // function for set Error msg ---------------------------------->>>>>>>>>>>>>>
+        function setErrorMsg(input, errormsgs) {
+            const formControl = input.parentElement;
+            const small = formControl.querySelector('small');
+            formControl.className = "form-control error";
+            small.innerText = errormsgs;
+        }
+
+
+
+        function setSuccessMsg(input) {
+            const formControl = input.parentElement;
+            formControl.className = "form-control success";
+        }
+
+    </script>
+</body>
+
+</html>
